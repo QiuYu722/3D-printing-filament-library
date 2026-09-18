@@ -1,0 +1,53 @@
+name: filament_hub
+description: "3D打印耗材库管理系统 - Filament Hub"
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  provider: ^6.1.2
+
+  # Charts (1.x uses `duration` param; 0.69.x uses `swapAnimationDuration`)
+  fl_chart: ^1.0.0
+
+  # Local storage
+  shared_preferences: ^2.2.0
+
+  # Utilities
+  intl: ^0.19.0
+  uuid: ^4.4.0
+
+  # Image picker (for camera / gallery capture)
+  image_picker: ^1.1.0
+
+  # Palette extraction (real color pick from image)
+  palette_generator: ^0.3.3+6
+
+  # File picker (for Excel import)
+  file_picker: ^8.0.0
+
+  # Excel parsing
+  excel: ^4.0.0
+
+  # Scanner (UI ready, activate when needed)
+  mobile_scanner: ^5.0.0
+
+  # Database (for future migration to Drift)
+  drift: ^2.20.0
+  sqlite3_flutter_libs: ^0.5.0
+  path_provider: ^2.1.0
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+  drift_dev: ^2.20.0
+  build_runner: ^2.4.0
+
+flutter:
+  uses-material-design: true

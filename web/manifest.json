@@ -1,0 +1,10 @@
+{
+    "name": "Filament Hub",
+    "short_name": "FilamentHub",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#F6F6F3",
+    "theme_color": "#5B67F1",
+    "description": "3D打印耗材库管理系统",
+    "orientation": "portrait-primary"
+}
