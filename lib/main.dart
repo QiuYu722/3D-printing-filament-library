@@ -1,5 +1,5 @@
 // Filament Hub — 3D 打印耗材库管理系统
-// 源码仓库：github.com/QiuYu722/FilamentHub
+// 源码仓库：github.com/QiuYu722/3D-printing-filament-library
 // 请勿用于商业用途
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

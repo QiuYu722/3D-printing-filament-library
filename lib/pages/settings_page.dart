@@ -471,7 +471,7 @@ class SettingsPage extends StatelessWidget {
             SizedBox(height: 8),
             Text('Version 1.1.0'),
             SizedBox(height: 8),
-            Text('github.com/QiuYu722/FilamentHub'),
+            Text('github.com/QiuYu722/3D-printing-filament-library'),
             SizedBox(height: 8),
             Text('请勿商业'),
           ],
