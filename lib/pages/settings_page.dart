@@ -471,7 +471,9 @@ class SettingsPage extends StatelessWidget {
             SizedBox(height: 8),
             Text('Version 1.1.0'),
             SizedBox(height: 8),
-            Text('使用 Flutter 构建'),
+            Text('github.com/QiuYu722/FilamentHub'),
+            SizedBox(height: 8),
+            Text('请勿商业'),
           ],
         ),
         actions: [
