@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:palette_generator/palette_generator.dart';
 import '../app/theme.dart';
 import '../providers/inventory_provider.dart';
+import '../services/ocr_service.dart';
 
 class ScanPage extends StatefulWidget {
   const ScanPage({super.key});
@@ -20,6 +21,8 @@ class _ScanPageState extends State<ScanPage> {
   final _codeCtrl = TextEditingController();
   final _materialCtrl = TextEditingController();
   final _colorNameCtrl = TextEditingController();
+
+  final OcrService _ocr = OcrService();
 
   String _colorHex = '#5B67F1';
   List<Color> _palette = [];
@@ -85,7 +88,7 @@ class _ScanPageState extends State<ScanPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              '自动吸取色块，填写材质、编号、颜色名称',
+              '自动识别材质、编号、颜色名称并吸取色块',
               style: TextStyle(fontSize: 13, color: AppColors.sub(context)),
               textAlign: TextAlign.center,
             ),
@@ -166,7 +169,7 @@ class _ScanPageState extends State<ScanPage> {
           children: [
             const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
             const SizedBox(width: 12),
-            Text('正在吸取颜色...', style: TextStyle(fontSize: 13, color: AppColors.sub(context))),
+            Text('正在识别图片...', style: TextStyle(fontSize: 13, color: AppColors.sub(context))),
           ],
         ),
       );
@@ -237,8 +240,11 @@ class _ScanPageState extends State<ScanPage> {
         _palette = [];
       });
       await _extractPalette(img.path);
+      await _extractText(img.path);
+      if (mounted) setState(() => _analyzing = false);
     } catch (e) {
       if (mounted) {
+        setState(() => _analyzing = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('无法获取图片：$e'), backgroundColor: AppColors.danger),
         );
@@ -278,9 +284,37 @@ class _ScanPageState extends State<ScanPage> {
 
     if (!mounted) return;
     setState(() {
-      _analyzing = false;
       _palette = unique;
       if (_palette.isNotEmpty) _colorHex = _colorToHex(_palette.first);
+    });
+  }
+
+  Future<void> _extractText(String path) async {
+    final OcrResult result;
+    try {
+      result = await _ocr.recognize(path);
+    } catch (_) {
+      return;
+    }
+    if (!mounted) return;
+    setState(() {
+      if (result.material != null) _materialCtrl.text = result.material!;
+      if (result.code != null) _codeCtrl.text = result.code!;
+      if (result.colorName != null) _colorNameCtrl.text = result.colorName!;
+    });
+    if (result.code != null) _fillFromExisting();
+  }
+
+  void _fillFromExisting() {
+    final code = _codeCtrl.text.trim();
+    if (code.isEmpty) return;
+    final provider = context.read<InventoryProvider>();
+    final existing = provider.findByCode(code);
+    if (existing == null) return;
+    setState(() {
+      _materialCtrl.text = existing.material;
+      _colorNameCtrl.text = existing.colorName;
+      _colorHex = existing.colorHex;
     });
   }
 

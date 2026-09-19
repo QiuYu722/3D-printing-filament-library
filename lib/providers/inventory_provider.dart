@@ -208,6 +208,16 @@ class InventoryProvider extends ChangeNotifier {
     return list.isEmpty ? null : list.first;
   }
 
+  /// 按耗材编号查找（精确匹配，忽略大小写）
+  Filament? findByCode(String code) {
+    final q = code.trim();
+    if (q.isEmpty) return null;
+    final list = _filaments.where(
+      (f) => f.code == q || f.code.toLowerCase() == q.toLowerCase(),
+    );
+    return list.isEmpty ? null : list.first;
+  }
+
   /// 导出耗材库为 CSV 文本（表头：编号、颜色名称、色值、数量、品牌、材质、预警数量）
   String exportFilamentsCsv() {
     final buf = StringBuffer();
